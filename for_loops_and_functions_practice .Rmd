@@ -1,0 +1,176 @@
+---
+title: "Functions_warmup"
+author: "Charles Hendrickson"
+date: "8/12/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(palmerpenguins)
+```
+
+## 
+
+```{r}
+
+quarter_splits <- c(1.0, 1.1, 1.2, 1.1, 1.4, 1.5, 1.6, 1.4)
+
+out <- vector(mode = "numeric", 
+              length = (length(quarter_splits) -1))
+
+for (i in 1:(length(quarter_splits) -1)) {
+  q <- quarter_splits[i] + quarter_splits[i +1]
+  out[i] <- q
+}
+
+out
+
+```
+
+
+# Another for loop example:
+```{r}
+birddog_sum <- function(bird, dog) {
+  add_birddog <- bird + dog
+  return(add_birddog)
+}
+
+birddog_sum(bird = 100, dog = 5)
+
+# How to break this? - add a non-numeric value for bird or dog
+
+birddog_sum(bird = 25, dog = 10)
+```
+
+```{r}
+say_hello <- function(friend, weekday) {
+  print(paste("Hello,", friend, "have a great", weekday))
+}
+
+say_hello(friend = "Jesse", weekday = "Thursday")
+```
+
+
+```{r}
+find_multiple <- function(a, b) {
+  my_multiplication <- a * b
+  print(my_multiplication)
+}
+
+find_multiple(a = 10, b = 6)
+
+find_multiple(a = 10, b = 6) + 12
+
+```
+
+### Functions with conditions 
+
+```{r}
+animal_age <- function(animal, age) {
+  
+  if (!animal %in% c("dog", "goat")) {
+    warning("Animal must be a dog or a goat.")
+  }
+  
+  if (animal == "dog") {
+    creature_age <- age * 7
+  }
+  
+  else if (animal == "goat") {
+    creature_age <- age * 4.7
+  }
+  
+  return(creature_age)
+  
+}
+
+# animal_age(animal = "urchin", age = 10)
+
+
+```
+
+# Right way to look for rows with "in operator" or "%in%"
+# For any row does the row match Adelie or Gentoo?
+```{r}
+adelie_gentoo <- penguins %>%
+  filter(species %in% c("Adelie", "Gentoo"))
+
+```
+
+# WRONG way to look for rows
+# Looking for Adelie in the first row and Gentoo in the second row... then Adelie in the third row. 
+```{r}
+adelie_gentoo_WRONG <- penguins %>%
+  filter(species == c("Adelie", "Gentoo"))
+
+```
+
+## Combine functions & for loops 
+
+```{r}
+df_means <- function(df) {
+  for (i in 1:ncol(df)) {
+    col_mean <- mean(df[[i]], na.rm = TRUE)
+    column_name <- colnames(df[i])
+    print(paste("The mean of", column_name, "is", col_mean))
+  }
+}
+
+df_means(mtcars)
+
+# colnames(df[i]) will return that column name as a string
+
+# Update this code to include the column name associated with the mean value from the column
+
+
+```
+
+```{r}
+# Make a subset of only structural size variables from the penguins for Chinstrap
+
+chinstrap_sizes <- penguins %>% 
+  filter(species == "Chinstrap") %>% 
+  select(bill_length_mm, bill_depth_mm, flipper_length_mm,
+         body_mass_g)
+
+df_means(df = chinstrap_sizes)
+
+
+```
+
+
+## Condition to check the class of an imput
+```{r}
+lunchtime <- function(tacos, price_per) {
+  
+  if (is.numeric(tacos) == FALSE) {
+    stop("You must input a number of tacos.")
+  }
+  
+  
+  total_price <- tacos * price_per
+  return(total_price)
+}
+  
+lunchtime(tacos = 10, price_per = 1.25)
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
